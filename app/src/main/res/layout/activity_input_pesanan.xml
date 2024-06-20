@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login">
+    <FrameLayout
+        android:id="@+id/frameLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/frame">
+
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="@color/frame"
+            app:srcCompat="?attr/actionModeCloseDrawable" />
+
+        <TextView
+            android:layout_width="181dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="8dp"
+            android:text="Input Pemesanan"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="166dp"
+        android:layout_below="@+id/frameLayout1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="68dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/brokoli2" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@+id/imageView7"
+        android:layout_marginTop="0dp"
+        android:background="@color/frame"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="58dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:srcCompat="@drawable/brokoli2" />
+
+        <TextView
+            android:id="@+id/textbrokoli"
+            android:layout_width="79dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/text_brokoli_description"
+            android:text="BROKOLI"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textharga"
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textbrokoli"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="25dp"
+            android:contentDescription="@string/text_brokoli_description"
+            android:text="Healthy fresh and delicious"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/frameLayout2"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="85dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/kurang" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/frameLayout2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="100dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/tambah" />
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="86dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frameLayout2"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="90dp"
+        android:layout_marginEnd="2dp"
+        android:layout_toStartOf="@+id/imageButton4"
+        android:layout_toEndOf="@+id/imageButton3"
+        android:ems="10"
+        android:inputType="number"
+        android:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/btnTamKer"
+        android:layout_width="323dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextNumber"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="221dp"
+        android:layout_marginEnd="40dp"
+        android:text="Tambahkan Ke Keranjang"
+        android:background="@drawable/button"/>
+
+
+</RelativeLayout>
