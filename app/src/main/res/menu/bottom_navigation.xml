@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Home"
+    <item android:title=""
         android:icon="@drawable/beranda"
+        android:iconTint="@color/orange"
+        android:enabled="true"
         android:id="@+id/homeFragment"
         />
-
-    <item android:title="Favorite"
+    <item android:title=""
         android:icon="@drawable/pesanan"
-        android:id="@+id/favoriteMeals"
+        android:iconTint="@color/orange"
+        android:enabled="true"
+        android:id="@+id/keranjangFragment"
         />
-
-    <item android:title="Category"
+    <item android:title=""
         android:icon="@drawable/riwayat"
-        android:id="@+id/categoryFragment"
+        android:iconTint="@color/orange"
+        android:enabled="true"
+        android:id="@+id/riwayatFragment"
         />
 </menu>

@@ -12,11 +12,11 @@
     <fragment
         android:id="@+id/keranjangFragment"
         android:name="com.nurulhidayati_222013.rumahsayur.fragment.KeranjangFragment"
-        android:label="fragment_category"
+        android:label="fragment_keranjang"
         tools:layout="@layout/fragment_keranjang" />
     <fragment
         android:id="@+id/riwayatFragment"
         android:name="com.nurulhidayati_222013.rumahsayur.fragment.RiwayatFragment"
-        android:label="fragment_search"
+        android:label="fragment_riwayat"
         tools:layout="@layout/fragment_riwayat" />
 </navigation>

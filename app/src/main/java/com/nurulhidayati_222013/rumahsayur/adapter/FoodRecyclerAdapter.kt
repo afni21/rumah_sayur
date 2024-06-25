@@ -36,16 +36,21 @@ class FoodRecyclerAdapter : RecyclerView.Adapter<FoodRecyclerAdapter.FruitViewHo
     override fun onBindViewHolder(holder: FruitViewHolder, position: Int) {
         holder.binding.apply {
             textSayur.text = categoryList[position].strName
+            textharga.text = categoryList[position].strPrice
 
             Glide.with(holder.itemView)
-                .load(categoryList[position].strName)
+                .load(categoryList[position].strImage)
                 .into(imgSayur)
+//            Glide.with(holder.itemView)
+//                .load(food.strImage)
+//                .placeholder(R.drawable.placeholder_image) // Tambahkan placeholder jika diperlukan
+//                .error(R.drawable.error_image) // Tambahkan gambar kesalahan jika diperlukan
+//                .into(imgSayur)
         }
 
         holder.itemView.setOnClickListener {
             onItemClick.onClickListener(categoryList[position])
         }
-
 
     }
 

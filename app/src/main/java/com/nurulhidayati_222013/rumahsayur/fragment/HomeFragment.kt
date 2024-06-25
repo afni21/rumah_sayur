@@ -2,12 +2,15 @@ package com.nurulhidayati_222013.rumahsayur.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import com.nurulhidayati_222013.rumahsayur.InputPesanan
 import com.nurulhidayati_222013.rumahsayur.R
 import com.nurulhidayati_222013.rumahsayur.adapter.FoodRecyclerAdapter
@@ -17,6 +20,8 @@ import com.nurulhidayati_222013.rumahsayur.model.Food
 class HomeFragment : Fragment() {
     private lateinit var myAdapter: FoodRecyclerAdapter
     lateinit var binding: FragmentHomeBinding
+    val db = Firebase.firestore
+    val foodCollection = db.collection("food")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +49,34 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        val mainFragMVVM = ViewModelProviders.of(this)[MainFragMVVM::class.java]
         showLoadingCase()
+        cancelLoadingCase()
 
+        val data1 = hashMapOf(
+            "name" to "basb",
+            "image" to "dasds",
+            "price" to "sds",
+        )
+
+        foodCollection.document("SF").set(data1)
+
+        foodCollection.get()
+            .addOnSuccessListener { documents ->
+                val foodList = documents.map { document ->
+                    Food(
+                        idFood = document.id,
+                        strName = document.getString("name") ?: "",
+                        strImage = document.getString("image") ?: "",
+                        strPrice = document.getString("price") ?: "",
+                        )
+                }
+                setCategoryAdapter(foodList)
+                Log.d("HomeFragment", "berhasil mengambil data",)
+
+            }
+            .addOnFailureListener { exception ->
+                // Tangani kesalahan pengambilan data
+                Log.e("HomeFragment", "Error getting food documents", exception)
+            }
 
         prepareCategoryRecyclerView()
         myAdapter.onItemClicked(object : FoodRecyclerAdapter.OnItemFruitClicked {
@@ -60,7 +92,7 @@ class HomeFragment : Fragment() {
     private fun showLoadingCase() {
         binding.apply {
             recViewFruit.visibility = View.VISIBLE
-            rootHome.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.primary))
+            rootHome.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
     }
 
