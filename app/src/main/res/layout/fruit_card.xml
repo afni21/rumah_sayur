@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/img_sayur"
+            android:layout_width="187dp"
+            android:layout_height="109dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/frame"
+            android:scaleType="fitCenter"
+            android:src="@drawable/kangkung" />
+
+        <TextView
+            android:id="@+id/text_sayur"
+            android:layout_width="79dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="KANGKUNG"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textharga"
+            android:layout_width="79dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Rp. 6.000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
