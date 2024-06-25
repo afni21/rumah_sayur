@@ -19,10 +19,9 @@ import com.nurulhidayati_222013.rumahsayur.model.Food
 
 class HomeFragment : Fragment() {
     private lateinit var myAdapter: FoodRecyclerAdapter
-    lateinit var binding: FragmentHomeBinding
-    val db = Firebase.firestore
-    val foodCollection = db.collection("food")
-
+    private lateinit var binding: FragmentHomeBinding
+    private  val db = Firebase.firestore
+    private val foodCollection = db.collection("food")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +39,7 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
-        const val FRUIT_IMAGE="com.nurulhidayati_222013.rumahsayur.fragment.fruitimage"
         const val FRUIT_NAME="com.nurulhidayati_222013.rumahsayur.fragment.fruitname"
-        const val FRUIT_PRICE="com.nurulhidayati_222013.rumahsayur.fragment.fruitprice"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,20 +50,21 @@ class HomeFragment : Fragment() {
 
         val data1 = hashMapOf(
             "name" to "basb",
-            "image" to "dasds",
-            "price" to "sds",
+            "image" to "https://cdn1-production-images-kly.akamaized.net/d_XeXi__hXPpdP-kOUjugTYc9HU=/500x667/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3527238/original/091552700_1627785660-132468207_734819403906396_393591296740971871_n.jpg",
+            "price" to 2000,
         )
 
-        foodCollection.document("SF").set(data1)
+//        foodCollection.add(data1)
 
         foodCollection.get()
             .addOnSuccessListener { documents ->
                 val foodList = documents.map { document ->
+                    val price = document.getLong("price") ?: 0L
                     Food(
                         idFood = document.id,
                         strName = document.getString("name") ?: "",
                         strImage = document.getString("image") ?: "",
-                        strPrice = document.getString("price") ?: "",
+                        intPrice = price.toInt(),
                         )
                 }
                 setCategoryAdapter(foodList)
@@ -111,7 +109,7 @@ class HomeFragment : Fragment() {
     private fun prepareCategoryRecyclerView() {
         binding.recViewFruit.apply {
             adapter = myAdapter
-            layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         }
     }
 

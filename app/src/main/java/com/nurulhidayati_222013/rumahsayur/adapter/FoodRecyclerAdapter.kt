@@ -36,7 +36,7 @@ class FoodRecyclerAdapter : RecyclerView.Adapter<FoodRecyclerAdapter.FruitViewHo
     override fun onBindViewHolder(holder: FruitViewHolder, position: Int) {
         holder.binding.apply {
             textSayur.text = categoryList[position].strName
-            textharga.text = categoryList[position].strPrice
+            textharga.text = "Rp. " + categoryList[position].intPrice.toString()
 
             Glide.with(holder.itemView)
                 .load(categoryList[position].strImage)

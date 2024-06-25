@@ -1,60 +1,134 @@
 package com.nurulhidayati_222013.rumahsayur.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import com.nurulhidayati_222013.rumahsayur.InputPesanan
 import com.nurulhidayati_222013.rumahsayur.R
+import com.nurulhidayati_222013.rumahsayur.adapter.PesananRecyclerAdapter
+//import com.nurulhidayati_222013.rumahsayur.adapter.PesananRecyclerAdapter
+import com.nurulhidayati_222013.rumahsayur.databinding.FragmentKeranjangBinding
+import com.nurulhidayati_222013.rumahsayur.model.Pesanan
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [KeranjangFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class KeranjangFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var myAdapter: PesananRecyclerAdapter
+    private lateinit var binding: FragmentKeranjangBinding
+    private val db = Firebase.firestore
+    private val pesananCol = db.collection("pesanan")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        binding = FragmentKeranjangBinding.inflate(layoutInflater)
+        myAdapter = PesananRecyclerAdapter()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return binding.root
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_keranjang, container, false)
+//        return inflater.inflate(R.layout.fragment_keranjang, container, false)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment KeranjangFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            KeranjangFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        const val FRUIT_NAME = "com.nurulhidayati_222013.rumahsayur.fragment.fruitname"
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        val mainFragMVVM = ViewModelProviders.of(this)[MainFragMVVM::class.java]
+        showLoadingCase()
+        cancelLoadingCase()
+
+        val data1 = hashMapOf(
+            "name" to "basb",
+            "image" to "https://cdn1-production-images-kly.akamaized.net/d_XeXi__hXPpdP-kOUjugTYc9HU=/500x667/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3527238/original/091552700_1627785660-132468207_734819403906396_393591296740971871_n.jpg",
+            "price" to 1,
+            "quantity" to 1,
+            "idCustamer" to "1",
+        )
+
+//        pesananCol.add(data1)
+
+        pesananCol.get()
+            .addOnSuccessListener { documents ->
+                val pesananList = documents.map { document ->
+                    val price = document.getLong("price") ?: 0L
+                    val quantity = document.getLong("quantity") ?: 0L
+                    Pesanan(
+                        idFood = document.id,
+                        strName = document.getString("name") ?: "",
+                        strImage = document.getString("image") ?: "",
+                        intPrice = price.toInt(),
+                        intQuantity = quantity.toInt(),
+                        idCustamer = document.getString("idCustamer") ?: "",
+                    )
                 }
+                setPesananAdapter(pesananList)
+                Log.d("KeranjangFragment", "berhasil mengambil data")
+
             }
+            .addOnFailureListener { exception ->
+                // Tangani kesalahan pengambilan data
+                Log.e("KeranjangFragment", "Error getting food documents", exception)
+            }
+
+        preparePesananRecyclerView()
+        myAdapter.onItemClicked(object : PesananRecyclerAdapter.OnItemPesananClicked {
+            override fun onClickListener(food: Pesanan) {
+                val intent = Intent(activity, InputPesanan::class.java)
+                intent.putExtra(FRUIT_NAME, food.strName)
+                startActivity(intent)
+            }
+        })
+    }
+
+    private fun showLoadingCase() {
+        binding.apply {
+            recViewPesanan.visibility = View.VISIBLE
+            rootKerangang.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+        }
+    }
+
+    private fun cancelLoadingCase() {
+        binding.apply {
+            recViewPesanan.visibility = View.VISIBLE
+            rootKerangang.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+
+        }
+    }
+
+    private fun setPesananAdapter(food: List<Pesanan>) {
+        myAdapter.setPesananList(food)
+    }
+
+    private fun preparePesananRecyclerView() {
+        binding.recViewPesanan.apply {
+            adapter = myAdapter
+//            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
+
+        }
     }
 }
