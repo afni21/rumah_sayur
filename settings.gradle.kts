@@ -19,6 +19,8 @@ dependencyResolutionManagement {
     }
 }
 
+
 rootProject.name = "Rumah Sayur"
 include(":app")
+
  

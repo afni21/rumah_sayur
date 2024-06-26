@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.nurulhidayati_222013.rumahsayur.InputPesanan
+import com.nurulhidayati_222013.rumahsayur.OrderActivity
 import com.nurulhidayati_222013.rumahsayur.R
 import com.nurulhidayati_222013.rumahsayur.adapter.PesananRecyclerAdapter
 //import com.nurulhidayati_222013.rumahsayur.adapter.PesananRecyclerAdapter
@@ -74,7 +75,6 @@ class KeranjangFragment : Fragment() {
             .addOnFailureListener { exception ->
                 // Handle any errors
                 Log.e("Food", "Error getting food documents", exception)
-
             }
 
         pesananCol.get()
@@ -103,8 +103,12 @@ class KeranjangFragment : Fragment() {
         preparePesananRecyclerView()
         myAdapter.onItemClicked(object : PesananRecyclerAdapter.OnItemPesananClicked {
             override fun onClickListener(food: Pesanan) {
-                val intent = Intent(activity, InputPesanan::class.java)
-                intent.putExtra("data", food.idPesanan)
+                val intent = Intent(activity, OrderActivity::class.java)
+                intent.putExtra("idPesanan", food.idPesanan)
+                intent.putExtra("intQuantity", food.intQuantity)
+                intent.putExtra("intPrice", food.intPrice)
+                intent.putExtra("idCustomer", food.idCustomer)
+                intent.putExtra("idFood", food.idPesanan)
                 startActivity(intent)
             }
         })
