@@ -80,7 +80,10 @@ class HomeFragment : Fragment() {
         myAdapter.onItemClicked(object : FoodRecyclerAdapter.OnItemFruitClicked {
             override fun onClickListener(food: Food) {
                 val intent = Intent(activity, InputPesanan::class.java)
-                intent.putExtra(FRUIT_NAME, food.strName)
+                intent.putExtra("idFood", food.idFood)
+                intent.putExtra("strName", food.strName)
+                intent.putExtra("strImage", food.strImage)
+                intent.putExtra("int", food.intPrice)
                 startActivity(intent)
             }
 

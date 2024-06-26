@@ -5,7 +5,6 @@ data class Pesanan(
     val strName: String,
     val strImage: String,
     val intPrice: Int,
-    val intTotPrice: Int,
     val intQuantity: Int,
     val idCustomer: String,
     val idFood: String,

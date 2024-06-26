@@ -57,12 +57,11 @@ class KeranjangFragment : Fragment() {
         var intPrice = 0
 
         val data1 = hashMapOf(
-            "total_price" to 1,
             "quantity" to 1,
             "idCustomer" to "1",
             "idFood" to "9eD7FNYVNoaYRRiPZUGv",
         )
-        pesananCol.add(data1)
+//        pesananCol.add(data1)
 
         val docFood = foodCol.document("9eD7FNYVNoaYRRiPZUGv")
         docFood.get()
@@ -81,12 +80,10 @@ class KeranjangFragment : Fragment() {
         pesananCol.get()
             .addOnSuccessListener { documents ->
                 val pesananList = documents.map { document ->
-                    val totPrice = document.getLong("total_price") ?: 0L
                     val quantity = document.getLong("quantity") ?: 0L
                     Pesanan(
                         idPesanan = document.id,
                         intPrice = intPrice,
-                        intTotPrice = totPrice.toInt(),
                         intQuantity = quantity.toInt(),
                         strName = strName,
                         strImage = strImage,

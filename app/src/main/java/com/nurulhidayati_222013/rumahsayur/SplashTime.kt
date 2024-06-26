@@ -23,7 +23,7 @@ class SplashTime : AppCompatActivity() {
     }
 
     private fun navigateToLogin() {
-        val intent = Intent(this, Login::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish() // Close the SplashTime activity after navigation
     }

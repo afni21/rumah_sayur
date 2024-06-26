@@ -62,7 +62,7 @@
             app:srcCompat="@drawable/brokoli2" />
 
         <TextView
-            android:id="@+id/textbrokoli"
+            android:id="@+id/tv_sayur"
             android:layout_width="79dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
