@@ -53,62 +53,65 @@ class KeranjangFragment : Fragment() {
         showLoadingCase()
         cancelLoadingCase()
 
-        var strImage= ""
-        var strName =""
-        var intPrice = 0
-
-        val data1 = hashMapOf(
-            "quantity" to 1,
-            "idCustomer" to "1",
-            "idFood" to "9eD7FNYVNoaYRRiPZUGv",
-        )
+//        val data1 = hashMapOf(
+//            "quantity" to 1,
+//            "idCustomer" to "1",
+//            "idFood" to "9eD7FNYVNoaYRRiPZUGv",
+//        )
 //        pesananCol.add(data1)
 
-        val docFood = foodCol.document("9eD7FNYVNoaYRRiPZUGv")
-        docFood.get()
-            .addOnSuccessListener { document ->
-                    intPrice = (document.getLong("price") ?: 0L).toInt()
-                    strName = document.getString("name") ?: ""
-                    strImage = document.getString("image") ?: ""
-
-            }
-            .addOnFailureListener { exception ->
-                // Handle any errors
-                Log.e("Food", "Error getting food documents", exception)
-            }
+        val pesananList = mutableListOf<Pesanan>()
 
         pesananCol.get()
             .addOnSuccessListener { documents ->
-                val pesananList = documents.map { document ->
+                documents.forEach { document ->
                     val quantity = document.getLong("quantity") ?: 0L
-                    Pesanan(
-                        idPesanan = document.id,
-                        intPrice = intPrice,
-                        intQuantity = quantity.toInt(),
-                        strName = strName,
-                        strImage = strImage,
-                        idCustomer = document.getString("idCustomer") ?: "",
-                        idFood = document.getString("idFood") ?: "",
-                    )
-                }
-                setPesananAdapter(pesananList)
-                Log.d("KeranjangFragment", "berhasil mengambil data")
+                    val idCustomer = document.getString("idCustomer") ?: ""
+                    val idFood = document.getString("idFood") ?: ""
 
+                    val docFood = foodCol.document(idFood)
+                    docFood.get()
+                        .addOnSuccessListener { foodDocument ->
+                            val intPrice = (foodDocument.getLong("price") ?: 0L).toInt()
+                            val strName = foodDocument.getString("name") ?: ""
+                            val strImage = foodDocument.getString("image") ?: ""
+
+                            val pesanan = Pesanan(
+                                idPesanan = document.id,
+                                intPrice = intPrice,
+                                intQuantity = quantity.toInt(),
+                                strName = strName,
+                                strImage = strImage,
+                                idCustomer = idCustomer,
+                                idFood = idFood
+                            )
+                            pesananList.add(pesanan)
+
+                            // Periksa apakah ini dokumen terakhir, lalu atur adapter
+                            if (pesananList.size == documents.size()) {
+                                setPesananAdapter(pesananList)
+                                Log.d("KeranjangFragment", "berhasil mengambil data")
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            // Handle any errors
+                            Log.e("Food", "Error getting food documents", exception)
+                        }
+                }
             }
             .addOnFailureListener { exception ->
                 // Tangani kesalahan pengambilan data
                 Log.e("KeranjangFragment", "Error getting food documents", exception)
             }
-
         preparePesananRecyclerView()
         myAdapter.onItemClicked(object : PesananRecyclerAdapter.OnItemPesananClicked {
-            override fun onClickListener(food: Pesanan) {
+            override fun onClickListener(pesanan: Pesanan) {
                 val intent = Intent(activity, OrderActivity::class.java)
-                intent.putExtra("idPesanan", food.idPesanan)
-                intent.putExtra("intQuantity", food.intQuantity)
-                intent.putExtra("intPrice", food.intPrice)
-                intent.putExtra("idCustomer", food.idCustomer)
-                intent.putExtra("idFood", food.idPesanan)
+                intent.putExtra("idPesanan", pesanan.idPesanan)
+                intent.putExtra("intQuantity", pesanan.intQuantity)
+                intent.putExtra("intPrice", pesanan.intPrice)
+                intent.putExtra("idCustomer", pesanan.idCustomer)
+                intent.putExtra("idFood", pesanan.idPesanan)
                 startActivity(intent)
             }
         })
@@ -139,8 +142,8 @@ class KeranjangFragment : Fragment() {
         }
     }
 
-    private fun setPesananAdapter(food: List<Pesanan>) {
-        myAdapter.setPesananList(food)
+    private fun setPesananAdapter(pesanan: List<Pesanan>) {
+        myAdapter.setPesananList(pesanan)
     }
 
     private fun preparePesananRecyclerView() {

@@ -53,92 +53,88 @@ class RiwayatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        val mainFragMVVM = ViewModelProviders.of(this)[MainFragMVVM::class.java]
         showLoadingCase()
-        cancelLoadingCase()
-
 
         var strTanggal = ""
         var strImage = ""
         var strName = ""
         var intPrice = 0
 
-        val data1 = hashMapOf(
-            "name" to "basb",
-            "total_price" to 1,
-            "quantity" to 1,
-            "idCustomer" to "1",
-            "idFood" to "9eD7FNYVNoaYRRiPZUGv",
-        )
-
-        val riwayat = hashMapOf(
-            "total_price" to 30000,
-            "quantity" to 2,
-            "ongkir" to 8000, // Ganti dengan ongkos kirim jika ada
-            "alamat" to "btn insignia", // Ganti dengan alamat jika ada
-            "jalan" to "jl. maros", // Ganti dengan jalan jika ada
-            "tgl" to Timestamp.now(), // Ganti dengan tanggal jika ada
-            "idCustomer" to "1",
-            "idFood" to "9eD7FNYVNoaYRRiPZUGv"
-        )
+//
+//        val riwayat = hashMapOf(
+//            "total_price" to 30000,
+//            "quantity" to 2,
+//            "ongkir" to 8000, // Ganti dengan ongkos kirim jika ada
+//            "alamat" to "btn insignia", // Ganti dengan alamat jika ada
+//            "jalan" to "jl. maros", // Ganti dengan jalan jika ada
+//            "tgl" to Timestamp.now(), // Ganti dengan tanggal jika ada
+//            "idCustomer" to "1",
+//            "idFood" to "9eD7FNYVNoaYRRiPZUGv"
+//        )
 //        riwayatCol.add(riwayat)
 
-        val docFood = foodCol.document("9eD7FNYVNoaYRRiPZUGv")
-        docFood.get()
-            .addOnSuccessListener { document ->
-                intPrice = (document.getLong("price") ?: 0L).toInt()
-                strName = document.getString("name") ?: ""
-                strImage = document.getString("image") ?: ""
-            }
-            .addOnFailureListener { exception ->
-                // Handle any errors
-                Log.e("Food", "Error getting food documents", exception)
-            }
+        val riwayatList = mutableListOf<Riwayat>()
 
-//        foofCol.
         riwayatCol.get()
             .addOnSuccessListener { documents ->
-                val pesananList = documents.map { document ->
+                documents.forEach { document ->
                     val totPrice = document.getLong("total_price") ?: 0L
                     val quantity = document.getLong("quantity") ?: 0L
                     val ongkir = document.getLong("ongkir") ?: 0L
                     val timestamp = document.getTimestamp("tgl")
-                    if (timestamp != null) {
-                        // Convert Timestamp to Date if needed
+                    val alamat = document.getString("alamat") ?: ""
+                    val jalan = document.getString("jalan") ?: ""
+                    val idCus = document.getString("idCustomer") ?: ""
+                    val idFood = document.getString("idFood") ?: ""
+
+                    val formattedDate = if (timestamp != null) {
                         val date = timestamp.toDate()
-                        //Format the date as a string
-                        val formattedDate: String = SimpleDateFormat(
-                            "dd-MM-yyyy",
-                            Locale.getDefault()
-                        ).format(date)
-                        // Now you have the timestamp as a formatted string
-                        strTanggal = formattedDate
-
+                        SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)
                     } else {
-                        strTanggal = ""
+                        ""
                     }
-                    Riwayat(
-                        idRiwayat = document.id,
-                        intTotPrice = totPrice.toInt(),
-                        intQuantity = quantity.toInt(),
-                        intOngkir = ongkir.toInt(),
 
-                        strName = strName,
-                        strImage = strImage,
-                        intPrice = intPrice,
+                    // Ambil data dari koleksi 'food'
+                    val docFood = foodCol.document(idFood)
+                    docFood.get()
+                        .addOnSuccessListener { foodDocument ->
+                            val intPrice = (foodDocument.getLong("price") ?: 0L).toInt()
+                            val strName = foodDocument.getString("name") ?: ""
+                            val strImage = foodDocument.getString("image") ?: ""
 
-                        strAlamat = document.getString("alamat") ?: "",
-                        strJalan = document.getString("jalan") ?: "",
-                        strTanggal = strTanggal,
-                        idCustomer = document.getString("idCustomer") ?: "",
-                        idFood = document.getString("idFood") ?: "",
-                    )
+                            val riwayat = Riwayat(
+                                idRiwayat = document.id,
+                                intTotPrice = totPrice.toInt(),
+                                intQuantity = quantity.toInt(),
+                                intOngkir = ongkir.toInt(),
+                                strName = strName,
+                                strImage = strImage,
+                                intPrice = intPrice,
+                                strAlamat = alamat,
+                                strJalan = jalan,
+                                strTanggal = formattedDate,
+                                idCustomer = idCus,
+                                idFood = idFood
+                            )
+                            riwayatList.add(riwayat)
+
+                            // Periksa apakah ini dokumen terakhir, lalu atur adapter
+                            if (riwayatList.size == documents.size()) {
+                                setRiwayatAdapter(riwayatList)
+                                cancelLoadingCase()
+                                Log.d("RiwayatFragment", "berhasil mengambil data")
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            cancelLoadingCase()
+                            // Tangani kesalahan saat mengambil data 'food'
+                            Log.e("RiwayatFragment", "Error getting food document", exception)
+                        }
                 }
-                setRiwayatAdapter(pesananList)
-                Log.d("RiwayatFragment", "berhasil mengambil data")
-
             }
             .addOnFailureListener { exception ->
-                // Tangani kesalahan pengambilan data
-                Log.e("RiwayatFragment", "Error getting food documents", exception)
+                cancelLoadingCase()
+                // Tangani kesalahan pengambilan data riwayat
+                Log.e("RiwayatFragment", "Error getting riwayat documents", exception)
             }
 
         preparePesananRecyclerView()
