@@ -24,6 +24,7 @@ class KeranjangFragment : Fragment() {
     private lateinit var binding: FragmentKeranjangBinding
     private val db = Firebase.firestore
     private val pesananCol = db.collection("pesanan")
+    private val foodCol = db.collection("food")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +43,7 @@ class KeranjangFragment : Fragment() {
     }
 
     companion object {
-        const val FRUIT_NAME = "com.nurulhidayati_222013.rumahsayur.fragment.fruitname"
+//        const val FRUIT_NAME = "com.nurulhidayati_222013.rumahsayur.fragment.fruitname"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,28 +52,46 @@ class KeranjangFragment : Fragment() {
         showLoadingCase()
         cancelLoadingCase()
 
-        val data1 = hashMapOf(
-            "name" to "basb",
-            "image" to "https://cdn1-production-images-kly.akamaized.net/d_XeXi__hXPpdP-kOUjugTYc9HU=/500x667/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3527238/original/091552700_1627785660-132468207_734819403906396_393591296740971871_n.jpg",
-            "price" to 1,
-            "quantity" to 1,
-            "idCustamer" to "1",
-        )
+        var strImage= ""
+        var strName =""
+        var intPrice = 0
 
-//        pesananCol.add(data1)
+        val data1 = hashMapOf(
+            "total_price" to 1,
+            "quantity" to 1,
+            "idCustomer" to "1",
+            "idFood" to "9eD7FNYVNoaYRRiPZUGv",
+        )
+        pesananCol.add(data1)
+
+        val docFood = foodCol.document("9eD7FNYVNoaYRRiPZUGv")
+        docFood.get()
+            .addOnSuccessListener { document ->
+                    intPrice = (document.getLong("price") ?: 0L).toInt()
+                    strName = document.getString("name") ?: ""
+                    strImage = document.getString("image") ?: ""
+
+            }
+            .addOnFailureListener { exception ->
+                // Handle any errors
+                Log.e("Food", "Error getting food documents", exception)
+
+            }
 
         pesananCol.get()
             .addOnSuccessListener { documents ->
                 val pesananList = documents.map { document ->
-                    val price = document.getLong("price") ?: 0L
+                    val totPrice = document.getLong("total_price") ?: 0L
                     val quantity = document.getLong("quantity") ?: 0L
                     Pesanan(
-                        idFood = document.id,
-                        strName = document.getString("name") ?: "",
-                        strImage = document.getString("image") ?: "",
-                        intPrice = price.toInt(),
+                        idPesanan = document.id,
+                        intPrice = intPrice,
+                        intTotPrice = totPrice.toInt(),
                         intQuantity = quantity.toInt(),
-                        idCustamer = document.getString("idCustamer") ?: "",
+                        strName = strName,
+                        strImage = strImage,
+                        idCustomer = document.getString("idCustomer") ?: "",
+                        idFood = document.getString("idFood") ?: "",
                     )
                 }
                 setPesananAdapter(pesananList)
@@ -88,7 +107,7 @@ class KeranjangFragment : Fragment() {
         myAdapter.onItemClicked(object : PesananRecyclerAdapter.OnItemPesananClicked {
             override fun onClickListener(food: Pesanan) {
                 val intent = Intent(activity, InputPesanan::class.java)
-                intent.putExtra(FRUIT_NAME, food.strName)
+                intent.putExtra("data", food.idPesanan)
                 startActivity(intent)
             }
         })

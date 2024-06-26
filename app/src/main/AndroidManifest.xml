@@ -27,7 +27,7 @@
             android:exported="false" />
         <activity
             android:name=".FramePesanan"
-            android:exported="false"></activity>
+            android:exported="false"/>
         <activity
             android:name=".InputPesanan"
             android:exported="false" />

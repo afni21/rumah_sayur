@@ -1,10 +1,12 @@
 package com.nurulhidayati_222013.rumahsayur.model
 
 data class Pesanan(
-    val idFood: String,
-    val strImage: String,
+    val idPesanan: String,
     val strName: String,
+    val strImage: String,
     val intPrice: Int,
+    val intTotPrice: Int,
     val intQuantity: Int,
-    val idCustamer: String,
+    val idCustomer: String,
+    val idFood: String,
     )
