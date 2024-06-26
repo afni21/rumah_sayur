@@ -54,7 +54,6 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation(libs.firebase.storage)
     implementation(libs.firebase.firestore.ktx)
-    implementation("com.github.worker8:radiogroupplus:1.0.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
