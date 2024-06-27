@@ -111,7 +111,7 @@ class KeranjangFragment : Fragment() {
                 intent.putExtra("intQuantity", pesanan.intQuantity)
                 intent.putExtra("intPrice", pesanan.intPrice)
                 intent.putExtra("idCustomer", pesanan.idCustomer)
-                intent.putExtra("idFood", pesanan.idPesanan)
+                intent.putExtra("idFood", pesanan.idFood)
                 startActivity(intent)
             }
         })

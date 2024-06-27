@@ -72,33 +72,39 @@ class OrderActivity : AppCompatActivity() {
 
             if (pembayaran == "") {
                 Toast.makeText(this, "pilih metode pembayaran", Toast.LENGTH_SHORT).show()
-            }
+            } else {
+                val riwayat = hashMapOf(
+                    "total_price" to intOngkir + (intQuantity * intPrice),
+                    "quantity" to intQuantity,
+                    "ongkir" to intOngkir,
+                    "alamat" to tvAalamat.text.toString(),
+                    "jalan" to tvJalan.text.toString(),
+                    "pembayaran" to pembayaran,
+                    "tgl" to Timestamp.now(),
+                    "idCustomer" to "1",
+                    "idFood" to idFood,
+                )
 
-            val riwayat = hashMapOf(
-                "total_price" to intOngkir + (intQuantity * intPrice),
-                "quantity" to intQuantity,
-                "ongkir" to intOngkir,
-                "alamat" to tvAalamat.text.toString(),
-                "jalan" to tvJalan.text.toString(),
-                "pembayaran" to pembayaran,
-                "tgl" to Timestamp.now(),
-                "idCustomer" to "1",
-                "idFood" to idFood,
-            )
+                riwayatCol.add(riwayat).addOnSuccessListener {
+                    val intent = Intent(this, TransaksiActivity::class.java)
+                    intent.putExtra("totalPrice", intOngkir + (intQuantity * intPrice))
+                    intent.putExtra("quantity", intQuantity)
+                    intent.putExtra("ongkir", intOngkir)
+                    intent.putExtra("harga", intPrice)
+                    intent.putExtra("jalan", tvJalan.text.toString())
+                    intent.putExtra("pembayaran", pembayaran)
+                    // ... add other order details as extras if needed
 
-            riwayatCol.add(riwayat).addOnSuccessListener {
-                // Data berhasil ditambahkan
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish() // Kembali ke halaman utama
-                Toast.makeText(this, "Keranjang +1 pesanan", Toast.LENGTH_SHORT)
-                    .show() // Tampilkan Toast
-            }
-                .addOnFailureListener { exception ->
-                    // Tangani kesalahan penambahan data
-                    Log.e("Input Pesanan", "Error add pesanan", exception)
-
+                    startActivity(intent)
+                    finish()
+                    Toast.makeText(this, "Riwayat +1 pesanan", Toast.LENGTH_SHORT).show()
                 }
+                    .addOnFailureListener { exception ->
+                        // Tangani kesalahan penambahan data
+                        Log.e("Input Pesanan", "Error add pesanan", exception)
+
+                    }
+            }
         }
 
     }
