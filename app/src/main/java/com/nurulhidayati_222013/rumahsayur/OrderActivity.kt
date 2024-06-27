@@ -50,6 +50,11 @@ class OrderActivity : AppCompatActivity() {
         var pembayaran = ""
         val intOngkir = 8000
 
+        findViewById<TextView>(R.id.tv_harga_order).text = "Rp. $intOngkir" // Menampilkan total harga
+        findViewById<TextView>(R.id.tv_ongkir_order).text = "Rp. $intOngkir" // Menampilkan total harga
+        findViewById<TextView>(R.id.tv_total_order).text = "Rp. $intOngkir" // Menampilkan total harga
+
+
         radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, checkedButtonId ->
             when (checkedButtonId) {
                 R.id.rb_option_a -> {

@@ -63,7 +63,7 @@
 
         <TextView
             android:id="@+id/tv_sayur"
-            android:layout_width="79dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginTop="10dp"
