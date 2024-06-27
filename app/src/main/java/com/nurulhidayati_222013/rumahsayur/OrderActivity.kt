@@ -49,7 +49,7 @@ class OrderActivity : AppCompatActivity() {
         val intPrice = intent.getIntExtra("intPrice", 0)
         var pembayaran = ""
         val intOngkir = 8000
-        val intTotal = intQuantity * intPrice + intOngkir
+        val intTotal = (intQuantity * intPrice) + intOngkir
 
         findViewById<TextView>(R.id.tv_harga_order).text = "Rp. $intPrice" // Menampilkan total harga
         findViewById<TextView>(R.id.tv_ongkir_order).text = "Rp. $intOngkir" // Menampilkan total harga
