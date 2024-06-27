@@ -52,6 +52,7 @@ class OrderActivity : AppCompatActivity() {
         val intTotal = (intQuantity * intPrice) + intOngkir
 
         findViewById<TextView>(R.id.tv_harga_order).text = "Rp. $intPrice" // Menampilkan total harga
+        findViewById<TextView>(R.id.tv_jumlah_order).text = "Rp. $intQuantity" // Menampilkan total harga
         findViewById<TextView>(R.id.tv_ongkir_order).text = "Rp. $intOngkir" // Menampilkan total harga
         findViewById<TextView>(R.id.tv_total_order).text = "Rp. $intTotal" // Menampilkan total harga
 
