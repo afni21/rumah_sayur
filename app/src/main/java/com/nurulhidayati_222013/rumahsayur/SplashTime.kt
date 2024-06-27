@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.nurulhidayati_222013.rumahsayur.authentication.Login
 
 class SplashTime : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
