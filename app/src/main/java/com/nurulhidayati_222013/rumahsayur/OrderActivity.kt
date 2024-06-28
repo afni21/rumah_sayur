@@ -61,12 +61,12 @@ class OrderActivity : AppCompatActivity() {
             when (checkedButtonId) {
                 R.id.rb_option_a -> {
                     pembayaran = "cod"
-                    Toast.makeText(this, "Option A is selected", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Cach On Dilevery", Toast.LENGTH_SHORT).show()
                 }
 
                 R.id.rb_option_b -> {
                     pembayaran = "mandiri"
-                    Toast.makeText(this, "Option B is selected", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Mandiri", Toast.LENGTH_SHORT).show()
                 }
             }
         })

@@ -8,55 +8,70 @@ import com.nurulhidayati_222013.rumahsayur.databinding.PesananCardBinding
 import com.nurulhidayati_222013.rumahsayur.model.Pesanan
 
 class PesananRecyclerAdapter : RecyclerView.Adapter<PesananRecyclerAdapter.PesananViewHolder>() {
-    private var pesananList:List<Pesanan> = ArrayList()
-    private lateinit var onItemClick: OnItemPesananClicked
-    private lateinit var onLongPesananClick:OnLongPesananClick
+    private var pesananList: List<Pesanan> = emptyList()
+    private var onItemClick: OnItemPesananClicked? = null
+    private var onLongPesananClick: OnLongPesananClick? = null
 
-    fun setPesananList(pesananList: List<Pesanan>){
+    // Method to update the list of pesanan
+    fun setPesananList(pesananList: List<Pesanan>) {
         this.pesananList = pesananList
         notifyDataSetChanged()
     }
 
-    fun setOnLongPesananClick(onLongCategoryClick:OnLongPesananClick){
-        this.onLongPesananClick = onLongCategoryClick
+    // Method to set the long click listener
+    fun setOnLongPesananClick(onLongPesananClick: OnLongPesananClick) {
+        this.onLongPesananClick = onLongPesananClick
     }
 
-    fun onItemClicked(onItemClick: OnItemPesananClicked){
+    // Method to set the item click listener
+    fun onItemClicked(onItemClick: OnItemPesananClicked) {
         this.onItemClick = onItemClick
     }
 
-    class PesananViewHolder(val binding:PesananCardBinding):RecyclerView.ViewHolder(binding.root)
+    // ViewHolder class to hold the views for each pesanan item
+    class PesananViewHolder(val binding: PesananCardBinding) : RecyclerView.ViewHolder(binding.root)
 
+    // Method to create ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PesananViewHolder {
-        return PesananViewHolder(PesananCardBinding.inflate(LayoutInflater.from(parent.context)))
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = PesananCardBinding.inflate(inflater, parent, false)
+        return PesananViewHolder(binding)
     }
 
+    // Method to bind data to ViewHolder
     override fun onBindViewHolder(holder: PesananViewHolder, position: Int) {
+        val pesanan = pesananList[position]
         holder.binding.apply {
-            textSayurPesanan.text = pesananList[position].strName
-            textHargaPesanan.text = "Rp. " + pesananList[position].intPrice.toString()
+            textSayurPesanan.text = pesanan.strName
+            textHargaPesanan.text = "Rp. ${pesanan.intPrice}"
 
-            Glide.with(holder.itemView)
-                .load(pesananList[position].strImage)
+            Glide.with(holder.itemView.context)
+                .load(pesanan.strImage)
                 .into(imgSayurPesanan)
-
         }
 
         holder.itemView.setOnClickListener {
-            onItemClick.onClickListener(pesananList[position])
+            onItemClick?.onClickListener(pesanan)
         }
 
+        holder.itemView.setOnLongClickListener {
+            onLongPesananClick?.onPesananLongClick(pesanan)
+            true
+        }
     }
 
+    // Method to return the total number of items
     override fun getItemCount(): Int {
         return pesananList.size
     }
 
-    interface OnItemPesananClicked{
+    // Interface for item click listener
+    interface OnItemPesananClicked {
         fun onClickListener(pesanan: Pesanan)
     }
 
-    interface OnLongPesananClick{
-        fun onPesananLongCLick(pesanan: Pesanan)
+    // Interface for item long click listener
+    interface OnLongPesananClick {
+        fun onPesananLongClick(pesanan: Pesanan)
     }
 }

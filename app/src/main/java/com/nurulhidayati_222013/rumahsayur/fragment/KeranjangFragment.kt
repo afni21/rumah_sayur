@@ -9,28 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
-import com.nurulhidayati_222013.rumahsayur.InputPesanan
+import com.google.firebase.firestore.FirebaseFirestore
 import com.nurulhidayati_222013.rumahsayur.OrderActivity
 import com.nurulhidayati_222013.rumahsayur.R
 import com.nurulhidayati_222013.rumahsayur.adapter.PesananRecyclerAdapter
-//import com.nurulhidayati_222013.rumahsayur.adapter.PesananRecyclerAdapter
 import com.nurulhidayati_222013.rumahsayur.databinding.FragmentKeranjangBinding
 import com.nurulhidayati_222013.rumahsayur.model.Pesanan
 
 class KeranjangFragment : Fragment() {
     private lateinit var myAdapter: PesananRecyclerAdapter
     private lateinit var binding: FragmentKeranjangBinding
-    private val db = Firebase.firestore
+    private val db = FirebaseFirestore.getInstance()
     private val pesananCol = db.collection("pesanan")
     private val foodCol = db.collection("food")
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentKeranjangBinding.inflate(layoutInflater)
         myAdapter = PesananRecyclerAdapter()
     }
 
@@ -38,32 +32,22 @@ class KeranjangFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentKeranjangBinding.inflate(inflater, container, false)
         return binding.root
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_keranjang, container, false)
-    }
-
-    companion object {
-//        const val FRUIT_NAME = "com.nurulhidayati_222013.rumahsayur.fragment.fruitname"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val mainFragMVVM = ViewModelProviders.of(this)[MainFragMVVM::class.java]
+
         showLoadingCase()
-        cancelLoadingCase()
-
-//        val data1 = hashMapOf(
-//            "quantity" to 1,
-//            "idCustomer" to "1",
-//            "idFood" to "9eD7FNYVNoaYRRiPZUGv",
-//        )
-//        pesananCol.add(data1)
-
         val pesananList = mutableListOf<Pesanan>()
 
         pesananCol.get()
             .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    showError("Tidak ada data pesanan")
+                    return@addOnSuccessListener
+                }
                 documents.forEach { document ->
                     val quantity = document.getLong("quantity") ?: 0L
                     val idCustomer = document.getString("idCustomer") ?: ""
@@ -91,18 +75,22 @@ class KeranjangFragment : Fragment() {
                             if (pesananList.size == documents.size()) {
                                 setPesananAdapter(pesananList)
                                 Log.d("KeranjangFragment", "berhasil mengambil data")
+                                cancelLoadingCase()
                             }
                         }
                         .addOnFailureListener { exception ->
                             // Handle any errors
                             Log.e("Food", "Error getting food documents", exception)
+                            showError("Gagal memuat data makanan")
                         }
                 }
             }
             .addOnFailureListener { exception ->
                 // Tangani kesalahan pengambilan data
-                Log.e("KeranjangFragment", "Error getting food documents", exception)
+                Log.e("KeranjangFragment", "Error getting pesanan documents", exception)
+                showError("Gagal memuat data pesanan")
             }
+
         preparePesananRecyclerView()
         myAdapter.onItemClicked(object : PesananRecyclerAdapter.OnItemPesananClicked {
             override fun onClickListener(pesanan: Pesanan) {
@@ -119,8 +107,10 @@ class KeranjangFragment : Fragment() {
 
     private fun showLoadingCase() {
         binding.apply {
-            recViewPesanan.visibility = View.VISIBLE
-            rootKerangang.setBackgroundColor(
+            recViewPesanan.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            tvError.visibility = View.GONE
+            rootKeranjang.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
@@ -132,13 +122,29 @@ class KeranjangFragment : Fragment() {
     private fun cancelLoadingCase() {
         binding.apply {
             recViewPesanan.visibility = View.VISIBLE
-            rootKerangang.setBackgroundColor(
+            progressBar.visibility = View.GONE
+            tvError.visibility = View.GONE
+            rootKeranjang.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
+        }
+    }
 
+    private fun showError(message: String) {
+        binding.apply {
+            recViewPesanan.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            tvError.text = message
+            tvError.visibility = View.VISIBLE
+            rootKeranjang.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
         }
     }
 
@@ -149,9 +155,7 @@ class KeranjangFragment : Fragment() {
     private fun preparePesananRecyclerView() {
         binding.recViewPesanan.apply {
             adapter = myAdapter
-//            layoutManager = LinearLayoutManager(context)
             layoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
-
         }
     }
 }

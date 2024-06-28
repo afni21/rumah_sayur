@@ -46,7 +46,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        val mainFragMVVM = ViewModelProviders.of(this)[MainFragMVVM::class.java]
         showLoadingCase()
-        cancelLoadingCase()
 
         val data1 = hashMapOf(
             "name" to "basb",
@@ -68,6 +67,7 @@ class HomeFragment : Fragment() {
                         )
                 }
                 setCategoryAdapter(foodList)
+                cancelLoadingCase()
                 Log.d("HomeFragment", "berhasil mengambil data",)
 
             }

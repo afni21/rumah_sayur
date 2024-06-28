@@ -1,24 +1,20 @@
 package com.nurulhidayati_222013.rumahsayur.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
-import com.nurulhidayati_222013.rumahsayur.InputPesanan
 import com.nurulhidayati_222013.rumahsayur.R
-import com.nurulhidayati_222013.rumahsayur.adapter.PesananRecyclerAdapter
 import com.nurulhidayati_222013.rumahsayur.adapter.RiwayatReciclerdafter
-import com.nurulhidayati_222013.rumahsayur.databinding.FragmentKeranjangBinding
 import com.nurulhidayati_222013.rumahsayur.databinding.FragmentRiwayatBinding
-import com.nurulhidayati_222013.rumahsayur.model.Pesanan
 import com.nurulhidayati_222013.rumahsayur.model.Riwayat
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -46,7 +42,7 @@ class RiwayatFragment : Fragment() {
     }
 
     companion object {
-//        const val FRUIT_NAME = "com.nurulhidayati_222013.rumahsayur.fragment.fruitname"
+        const val FRUIT_NAME = "com.nurulhidayati_222013.rumahsayur.fragment.fruitname"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,17 +56,17 @@ class RiwayatFragment : Fragment() {
         var intPrice = 0
 
 //
-//        val riwayat = hashMapOf(
-//            "total_price" to 30000,
-//            "quantity" to 2,
-//            "ongkir" to 8000, // Ganti dengan ongkos kirim jika ada
-//            "alamat" to "btn insignia", // Ganti dengan alamat jika ada
-//            "jalan" to "jl. maros", // Ganti dengan jalan jika ada
-//            "tgl" to Timestamp.now(), // Ganti dengan tanggal jika ada
-//            "idCustomer" to "1",
-//            "idFood" to "9eD7FNYVNoaYRRiPZUGv"
-//        )
-//        riwayatCol.add(riwayat)
+        val riwayat = hashMapOf(
+            "total_price" to 30000,
+            "quantity" to 2,
+            "ongkir" to 8000, // Ganti dengan ongkos kirim jika ada
+            "alamat" to "btn insignia", // Ganti dengan alamat jika ada
+            "jalan" to "jl. maros", // Ganti dengan jalan jika ada
+            "tgl" to Timestamp.now(), // Ganti dengan tanggal jika ada
+            "idCustomer" to "1",
+            "idFood" to "9eD7FNYVNoaYRRiPZUGv"
+        )
+        riwayatCol.add(riwayat)
 
         val riwayatList = mutableListOf<Riwayat>()
 
@@ -140,9 +136,10 @@ class RiwayatFragment : Fragment() {
         preparePesananRecyclerView()
         myAdapter.onItemClicked(object : RiwayatReciclerdafter.OnItemRiwayatClicked {
             override fun onClickListener(riwayat: Riwayat) {
-                val intent = Intent(activity, InputPesanan::class.java)
-                intent.putExtra("data", riwayat.idRiwayat)
-                startActivity(intent)
+//                val intent = Intent(activity, InputPesanan::class.java)
+//                intent.putExtra("data", riwayat.idRiwayat)
+//                startActivity(intent)
+//                Toast.makeText(this, "item riwayat", Toast.LENGTH_SHORT).show()
             }
         })
     }

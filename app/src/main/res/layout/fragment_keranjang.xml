@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_kerangang"
+    android:id="@+id/root_keranjang"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.KeranjangFragment">
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="27dp"
-            android:text="FIND EVERITING"
+            android:text="FIND EVERYTHING"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -28,18 +28,36 @@
             android:layout_marginTop="3dp"
             android:text="YOU LIKE"
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rec_view_pesanan"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="3dp"
+            android:text="Data tidak dapat dimuat"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </FrameLayout>

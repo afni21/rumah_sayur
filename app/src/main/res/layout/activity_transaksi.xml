@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Transaksi"
+        android:layout_marginStart="120dp"
         android:textColor="#000000"
         android:textSize="25sp"
         android:textStyle="bold" />
@@ -28,6 +29,7 @@
             android:id="@+id/textViewharga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="Harga"
             android:textColor="#535353"
             android:textSize="15sp"
@@ -38,6 +40,7 @@
             android:id="@+id/tv_harga_trans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="Rp15.000"
             android:textColor="#535353"
             android:textSize="15sp"
@@ -55,6 +58,7 @@
             android:id="@+id/textViewJumlah"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="Jumlah"
             android:textColor="#535353"
             android:textSize="15sp"
@@ -65,6 +69,7 @@
             android:id="@+id/tv_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="Rp15.000"
             android:textColor="#535353"
             android:textSize="15sp"
@@ -82,6 +87,7 @@
             android:id="@+id/textViewkirim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="Ongkir"
             android:textColor="#535353"
             android:textSize="15sp"
@@ -92,6 +98,7 @@
             android:id="@+id/tv_ongkir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="Rp15.000"
             android:textColor="#535353"
             android:textSize="15sp"
@@ -110,10 +117,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <TextView
             android:id="@+id/textViewtotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="Total"
             android:textColor="#535353"
             android:textSize="15sp"
@@ -121,11 +130,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <TextView
             android:id="@+id/tv_total_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="Rp15.000"
             android:textColor="#535353"
             android:textSize="15sp"
@@ -140,6 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="12dp"
+        android:layout_marginStart="16dp"
         android:text="Metode pembayaran"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -148,7 +158,7 @@
 
     <TextView
         android:id="@+id/tv_pembayaran"
-        android:layout_width="match_parent"
+        android:layout_width="359dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_radio_button"
