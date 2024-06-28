@@ -22,6 +22,7 @@ class KeranjangFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private val pesananCol = db.collection("pesanan")
     private val foodCol = db.collection("food")
+    private var isDataLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,57 +40,62 @@ class KeranjangFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showLoadingCase()
-        val pesananList = mutableListOf<Pesanan>()
+        if (!isDataLoaded){
+            showLoadingCase()
 
-        pesananCol.get()
-            .addOnSuccessListener { documents ->
-                if (documents.isEmpty) {
-                    showError("Tidak ada data pesanan")
-                    return@addOnSuccessListener
-                }
-                documents.forEach { document ->
-                    val quantity = document.getLong("quantity") ?: 0L
-                    val idCustomer = document.getString("idCustomer") ?: ""
-                    val idFood = document.getString("idFood") ?: ""
+            val pesananList = mutableListOf<Pesanan>()
 
-                    val docFood = foodCol.document(idFood)
-                    docFood.get()
-                        .addOnSuccessListener { foodDocument ->
-                            val intPrice = (foodDocument.getLong("price") ?: 0L).toInt()
-                            val strName = foodDocument.getString("name") ?: ""
-                            val strImage = foodDocument.getString("image") ?: ""
+            pesananCol.get()
+                .addOnSuccessListener { documents ->
+                    if (documents.isEmpty) {
+                        showError("Tidak ada data pesanan")
+                        return@addOnSuccessListener
+                    }
+                    documents.forEach { document ->
+                        val quantity = document.getLong("quantity") ?: 0L
+                        val idCustomer = document.getString("idCustomer") ?: ""
+                        val idFood = document.getString("idFood") ?: ""
 
-                            val pesanan = Pesanan(
-                                idPesanan = document.id,
-                                intPrice = intPrice,
-                                intQuantity = quantity.toInt(),
-                                strName = strName,
-                                strImage = strImage,
-                                idCustomer = idCustomer,
-                                idFood = idFood
-                            )
-                            pesananList.add(pesanan)
+                        val docFood = foodCol.document(idFood)
+                        docFood.get()
+                            .addOnSuccessListener { foodDocument ->
+                                val intPrice = (foodDocument.getLong("price") ?: 0L).toInt()
+                                val strName = foodDocument.getString("name") ?: ""
+                                val strImage = foodDocument.getString("image") ?: ""
 
-                            // Periksa apakah ini dokumen terakhir, lalu atur adapter
-                            if (pesananList.size == documents.size()) {
+                                val pesanan = Pesanan(
+                                    idPesanan = document.id,
+                                    intPrice = intPrice,
+                                    intQuantity = quantity.toInt(),
+                                    strName = strName,
+                                    strImage = strImage,
+                                    idCustomer = idCustomer,
+                                    idFood = idFood
+                                )
+                                pesananList.add(pesanan)
+
+                                // Periksa apakah ini dokumen terakhir, lalu atur adapter
+//                            if (pesananList.size == documents.size()) {
                                 setPesananAdapter(pesananList)
                                 Log.d("KeranjangFragment", "berhasil mengambil data")
                                 cancelLoadingCase()
+//                            }
                             }
-                        }
-                        .addOnFailureListener { exception ->
-                            // Handle any errors
-                            Log.e("Food", "Error getting food documents", exception)
-                            showError("Gagal memuat data makanan")
-                        }
+                            .addOnFailureListener { exception ->
+                                // Handle any errors
+                                Log.e("Food", "Error getting food documents", exception)
+                                showError("Gagal memuat data makanan")
+                            }
+                    }
+                    isDataLoaded = true
                 }
-            }
-            .addOnFailureListener { exception ->
-                // Tangani kesalahan pengambilan data
-                Log.e("KeranjangFragment", "Error getting pesanan documents", exception)
-                showError("Gagal memuat data pesanan")
-            }
+                .addOnFailureListener { exception ->
+                    // Tangani kesalahan pengambilan data
+                    Log.e("KeranjangFragment", "Error getting pesanan documents", exception)
+                    showError("Gagal memuat data pesanan")
+                    isDataLoaded = true
+                }
+        }
 
         preparePesananRecyclerView()
         myAdapter.onItemClicked(object : PesananRecyclerAdapter.OnItemPesananClicked {

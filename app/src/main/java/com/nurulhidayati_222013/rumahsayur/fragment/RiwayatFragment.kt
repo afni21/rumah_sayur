@@ -55,19 +55,6 @@ class RiwayatFragment : Fragment() {
         var strName = ""
         var intPrice = 0
 
-//
-        val riwayat = hashMapOf(
-            "total_price" to 30000,
-            "quantity" to 2,
-            "ongkir" to 8000, // Ganti dengan ongkos kirim jika ada
-            "alamat" to "btn insignia", // Ganti dengan alamat jika ada
-            "jalan" to "jl. maros", // Ganti dengan jalan jika ada
-            "tgl" to Timestamp.now(), // Ganti dengan tanggal jika ada
-            "idCustomer" to "1",
-            "idFood" to "9eD7FNYVNoaYRRiPZUGv"
-        )
-        riwayatCol.add(riwayat)
-
         val riwayatList = mutableListOf<Riwayat>()
 
         riwayatCol.get()
