@@ -9,13 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.nurulhidayati_222013.rumahsayur.InputPesanan
 import com.nurulhidayati_222013.rumahsayur.R
+import com.nurulhidayati_222013.rumahsayur.adapter.AutoImageSliderAdapter
 import com.nurulhidayati_222013.rumahsayur.adapter.FoodRecyclerAdapter
 import com.nurulhidayati_222013.rumahsayur.databinding.FragmentHomeBinding
 import com.nurulhidayati_222013.rumahsayur.model.Food
+import com.nurulhidayati_222013.rumahsayur.model.ItemImageSlider
+import java.util.logging.Handler
 
 class HomeFragment : Fragment() {
     private lateinit var myAdapter: FoodRecyclerAdapter
@@ -23,11 +27,15 @@ class HomeFragment : Fragment() {
     private  val db = Firebase.firestore
     private val foodCollection = db.collection("food")
 
+//    val bindingSlider by lazy {
+//        FragmentHomeBinding.inflate(layoutInflater)
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
         myAdapter = FoodRecyclerAdapter()
-    }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +54,20 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        val mainFragMVVM = ViewModelProviders.of(this)[MainFragMVVM::class.java]
         showLoadingCase()
+
+        val item= mutableListOf<ItemImageSlider>()
+        item.add(0, ItemImageSlider("Everything is here to enjoy quiz!",
+            "Quiz as a group or individually! Expand your circle!", R.drawable.image_slider1))
+        item.add(1, ItemImageSlider("Test your knowledge, Quiz Master!",
+            "Challenge yourself with a variety of quizzes!", R.drawable.image_slider2))
+        item.add(2, ItemImageSlider("Elevate your quiz experience!",
+            "Unleash your trivia prowess with Hungry Devops!", R.drawable.image_slider3))
+
+        val viewPagerAdapter = AutoImageSliderAdapter( requireContext(), item)
+        binding.viewPager.adapter = viewPagerAdapter
+        viewPagerAdapter.autoslide(binding.viewPager)
+
+//        binding.tabLayout.setupWithViewPager(binding.viewPager)
 
         val data1 = hashMapOf(
             "name" to "basb",
