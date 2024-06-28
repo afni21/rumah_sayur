@@ -58,7 +58,7 @@ class InputPesanan : AppCompatActivity() {
 
         Glide.with(this)
             .load(strImage)
-            .into(image1)
+            .into(image2)
 
         // Inisialisasi views
         editTextNumber = findViewById(R.id.editTextNumber)
